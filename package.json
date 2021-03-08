@@ -8,10 +8,13 @@
     "test": "node test.js",
     "build": "tsc --build",
     "build:check": "tsc --noEmit",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "prepare": "npm run build"
   },
   "files": [
-    "/dist/**/*"
+    "/dist/**/*",
+    "!/dist/**/*.map",
+    "typings/"
   ],
   "author": "",
   "license": "ISC",

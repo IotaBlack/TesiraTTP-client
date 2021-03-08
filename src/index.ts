@@ -1,5 +1,6 @@
-import { Socket, SocketConnectOpts } from "net";
+/// <reference path = "../typings/faults.d.ts" />
 
+import { Socket, SocketConnectOpts } from "net";
 import net = require("net");
 import EventEmitter = require("events");
 import {
@@ -8,7 +9,7 @@ import {
   parseMessage,
   TTP_OK_MESSAGE,
 } from "./messageParser";
-import { FaultList } from "./faults";
+import { FaultList } from "../typings/faults";
 
 declare interface ConnectOptions {
   host?: string;

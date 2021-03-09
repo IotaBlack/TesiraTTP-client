@@ -92,13 +92,8 @@ export function parseMessage(message: string): anyTTPMessage {
             content: parsekeyvaluepairs(tMessage),
             message: message,
           } as TTP_OK_MESSAGE;
-          break;
         case "-ERR":
-          let msg = "";
-          for (const token of tMessage) {
-            msg += token.value;
-          }
-          return { type: "ERR", content: msg, message: message } as TTP_ERR_MESSAGE;
+          return { type: "ERR", content: message, message: message } as TTP_ERR_MESSAGE;
         case "!":
           let content = parsekeyvaluepairs(tMessage);
           return {
@@ -188,6 +183,7 @@ function parsekeyvaluepairs(tArray: token[]) {
     key !== closeBracketSymbol &&
     typeof key == "string"
   ) {
+    cleanWhitespace(tArray);
     let token = tArray.shift();
     if (token.type == "punctuation" && token.value == ":") {
       cleanWhitespace(tArray);

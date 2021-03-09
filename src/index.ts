@@ -124,8 +124,7 @@ class TelnetTTP extends EventEmitter {
       });
 
       this.socket.on("data", (data) => {
-        // console.log(data);
-        data = this._parsedata(data);
+       this._parsedata(data);
       });
 
       this.socket.on("error", (error) => {
@@ -142,7 +141,6 @@ class TelnetTTP extends EventEmitter {
 
       this.socket.on("close", (had_error) => {
         this.emit("close", had_error);
-        console.log("asdfasdfasdf");
         if (this.state == null) reject(new Error("Socket closed"));
       });
     });
@@ -176,16 +174,16 @@ class TelnetTTP extends EventEmitter {
         resolve,
         reject
       );
-      this._processQueue();
     });
   }
-
+  
   private _queue(
     cmd: cmd,
     resolve: (value: anyTTPMessage | PromiseLike<anyTTPMessage>) => void,
     reject: (reason?: any) => void
-  ) {
-    this.queue.push({ ...cmd, resolve, reject });
+    ) {
+      this.queue.push({ ...cmd, resolve, reject });
+      this._processQueue();
   }
 
   private _processQueue() {
@@ -221,7 +219,6 @@ class TelnetTTP extends EventEmitter {
   }
 
   private _parsedata(data: Buffer) {
-    let tBuffer = [];
     let nvtResponse = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -259,7 +256,6 @@ class TelnetTTP extends EventEmitter {
     }
     if (nvtResponse.length) this.socket.write(Buffer.from(nvtResponse));
 
-    return Buffer.from(tBuffer);
   }
   private _processMessage(message: string): boolean {
     this.emit("data", message);
